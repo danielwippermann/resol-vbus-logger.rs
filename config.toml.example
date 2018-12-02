@@ -1,0 +1,27 @@
+### Absolute path to the serial port.
+# path = "/dev/tty.usb..."
+
+### IP address and port of the VBus-over-TCP device.
+address = "127.0.0.1:7053"
+
+### Password of the VBus-over-TCP device.
+password = "vbus"
+
+### Channel to connect to on the multi-channel VBus-over-TCP device (like the DL3).
+channel = 0
+
+### Number of seconds between each PNG creation.
+png_tick_interval = 10
+
+### Filename of the input image.
+png_input_filename = "Heizungsschema.bmp"
+
+### Filename of the output image.
+png_output_filename = "test.png"
+
+### Number of seconds between each CSV entry.
+csv_tick_interval = 60
+
+### Filename pattern of the CSV. May contain placeholders for date / time.
+### See https://docs.rs/chrono/0.3.1/chrono/format/strftime/index.html for details.
+csv_output_filename_pattern = "TextData_%Y%m%d.log"
