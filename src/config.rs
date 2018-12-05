@@ -19,6 +19,9 @@ pub struct Config {
 
     pub csv_tick_interval: i64,
     pub csv_output_filename_pattern: String,
+
+    pub live_data_text_tick_interval: i64,
+    pub live_data_text_output_filename: String,
 }
 
 

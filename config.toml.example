@@ -50,3 +50,24 @@ csv_tick_interval = 60
 ### Filename pattern of the CSV. May contain placeholders for date / time.
 ### See https://docs.rs/chrono/0.3.1/chrono/format/strftime/index.html for details.
 csv_output_filename_pattern = "TextData_%Y%m%d.log"
+
+
+###
+### Live data text generator
+###
+### This generator creates a CSV-like text file (separated by semicolons)
+### containing a row for each VBus value including the following data in the
+### columns:
+###
+### - Packet field ID (see http://danielwippermann.github.io/resol-vbus/vbus-packet-fields.html)
+### - Value
+### - Unit
+### - Packet and field name
+###
+
+### Number of seconds between each live data text write.
+### Use 0 to disable this generator.
+live_data_text_tick_interval = 10
+
+### Filename of the live data text file.
+live_data_text_output_filename = "test.txt"

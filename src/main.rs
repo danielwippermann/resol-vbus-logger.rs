@@ -66,6 +66,7 @@ extern crate toml;
 mod config;
 mod csv_generator;
 mod error;
+mod live_data_text_generator;
 mod png_generator;
 mod serial_port_stream;
 mod tick_source;
@@ -87,6 +88,7 @@ use resol_vbus::{
 use config::Config;
 use csv_generator::CsvGenerator;
 use error::{Error, Result};
+use live_data_text_generator::LiveDataTextGenerator;
 use png_generator::PngGenerator;
 use serial_port_stream::SerialPortStream;
 use tick_source::TickSource;
@@ -101,11 +103,13 @@ fn stream_live_data<R: Read + ReadWithTimeout, W: Write>(config: &Config, mut ld
 
     let png_generator = PngGenerator::from_config(&config)?;
     let mut csv_generator = CsvGenerator::from_config(&config)?;
+    let mut live_data_text_generator = LiveDataTextGenerator::from_config(&config)?;
 
     let now = UTC::now();
 
     let mut png_tick_source = TickSource::new(config.png_tick_interval, now);
     let mut csv_tick_source = TickSource::new(config.csv_tick_interval, now);
+    let mut live_data_text_tick_source = TickSource::new(config.live_data_text_tick_interval, now);
 
     loop {
         let now = UTC::now();
@@ -120,6 +124,13 @@ fn stream_live_data<R: Read + ReadWithTimeout, W: Write>(config: &Config, mut ld
             if data_set_is_settled {
                 debug!("CSV tick");
                 csv_generator.generate(&data_set, &now)?;
+            }
+        }
+
+        if live_data_text_tick_source.process(now) {
+            if data_set_is_settled {
+                debug!("Live Data Text tick");
+                live_data_text_generator.generate(&data_set, &now)?;
             }
         }
 
