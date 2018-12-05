@@ -1,7 +1,15 @@
+###
+### Connection settings
+###
+### This section defines how the VBus data are received.
+###
+
 ### Absolute path to the serial port.
+### Disable the `address` setting below if you want to use this.
 # path = "/dev/tty.usb..."
 
 ### IP address and port of the VBus-over-TCP device.
+### Disable the `path` setting above if you want to use this.
 address = "127.0.0.1:7053"
 
 ### Password of the VBus-over-TCP device.
@@ -10,7 +18,16 @@ password = "vbus"
 ### Channel to connect to on the multi-channel VBus-over-TCP device (like the DL3).
 channel = 0
 
+###
+### PNG generator
+###
+### This generator creates a PNG using a background images and overlaying
+### it with current VBus values. In this example it is customized for a
+### SKSC3 controller, but can be adapted in `src/png_generator.rs`.
+###
+
 ### Number of seconds between each PNG creation.
+### Use 0 to disable this generator.
 png_tick_interval = 10
 
 ### Filename of the input image.
@@ -19,7 +36,15 @@ png_input_filename = "Heizungsschema.bmp"
 ### Filename of the output image.
 png_output_filename = "test.png"
 
+
+###
+### CSV generator
+###
+### This generator append a row containing all VBus values to a file.
+###
+
 ### Number of seconds between each CSV entry.
+### Use 0 to disable this generator.
 csv_tick_interval = 60
 
 ### Filename pattern of the CSV. May contain placeholders for date / time.
