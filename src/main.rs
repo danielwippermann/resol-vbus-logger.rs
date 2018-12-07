@@ -78,10 +78,14 @@ use std::net::TcpStream;
 
 use resol_vbus::{
     chrono::prelude::*,
+    Data,
     DataSet,
+    Header,
     LiveDataStream,
+    Packet,
     ReadWithTimeout,
     TcpConnector,
+    ToPacketId,
 };
 
 
@@ -97,8 +101,25 @@ use tick_source::TickSource;
 fn stream_live_data<R: Read + ReadWithTimeout, W: Write>(config: &Config, mut lds: LiveDataStream<R, W>) -> Result<()> {
     let mut data_set = DataSet::new();
 
+    for packet_id in config.known_packet_ids.iter() {
+        let packet_id = packet_id.to_packet_id()?;
+        let packet = Packet {
+            header: Header {
+                timestamp: UTC::now(),
+                channel: packet_id.0,
+                destination_address: packet_id.1,
+                source_address: packet_id.2,
+                protocol_version: 0x10,
+            },
+            command: packet_id.3,
+            frame_count: 0,
+            frame_data: [0; 508],
+        };
+        data_set.add_data(Data::Packet(packet));
+    }
+
     let mut data_set_is_settled = false;
-    let mut data_set_settled_max_count = 0;
+    let mut data_set_settled_max_count = data_set.len() * 3;
     let mut data_set_settled_count = 0;
 
     let png_generator = PngGenerator::from_config(&config)?;
@@ -157,7 +178,9 @@ fn stream_live_data<R: Read + ReadWithTimeout, W: Write>(config: &Config, mut ld
                 } else {
                     data_set_is_settled = true;
 
-                    debug!("Settled {:?}", data_set.iter().map(|data| data.id_string()).collect::<Vec<_>>());
+                    let mut sorted_data_set = data_set.clone();
+                    sorted_data_set.sort();
+                    debug!("Settled {:?}", sorted_data_set.iter().map(|data| data.id_string()).collect::<Vec<_>>());
                 }
             }
         }
