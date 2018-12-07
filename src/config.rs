@@ -23,6 +23,11 @@ pub struct Config {
 
     pub live_data_text_tick_interval: i64,
     pub live_data_text_output_filename: String,
+
+    pub sqlite_tick_interval: i64,
+    pub sqlite_filename: String,
+    pub sqlite_statement: String,
+    pub sqlite_fields: Vec<String>,
 }
 
 

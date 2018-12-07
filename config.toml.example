@@ -18,6 +18,19 @@ password = "vbus"
 ### Channel to connect to on the multi-channel VBus-over-TCP device (like the DL3).
 channel = 0
 
+### List of known packet IDs to expect on this connection. Speeds up the
+### "settling" phase.
+known_packet_ids = [
+    # "00_0010_7E11_10_0100",
+    # "00_0010_7E11_10_0101",
+    # "00_6651_7E11_10_0200",
+    # "00_6652_7E11_10_0200",
+    # "00_6653_7E11_10_0200",
+    # "00_6654_7E11_10_0200",
+    # "00_6655_7E11_10_0200",
+]
+
+
 ###
 ### PNG generator
 ###
@@ -28,7 +41,7 @@ channel = 0
 
 ### Number of seconds between each PNG creation.
 ### Use 0 to disable this generator.
-png_tick_interval = 10
+png_tick_interval = 0
 
 ### Filename of the input image.
 png_input_filename = "Heizungsschema.bmp"
@@ -45,7 +58,7 @@ png_output_filename = "test.png"
 
 ### Number of seconds between each CSV entry.
 ### Use 0 to disable this generator.
-csv_tick_interval = 60
+csv_tick_interval = 0
 
 ### Filename pattern of the CSV. May contain placeholders for date / time.
 ### See https://docs.rs/chrono/0.3.1/chrono/format/strftime/index.html for details.
@@ -67,7 +80,44 @@ csv_output_filename_pattern = "TextData_%Y%m%d.log"
 
 ### Number of seconds between each live data text write.
 ### Use 0 to disable this generator.
-live_data_text_tick_interval = 10
+live_data_text_tick_interval = 0
 
 ### Filename of the live data text file.
 live_data_text_output_filename = "test.txt"
+
+
+###
+### SQLite logger
+###
+### This logger stores VBus data in a SQLite database.
+###
+
+### Number of seconds between each live data storage.
+### Use 0 to disable this logger
+sqlite_tick_interval = 0
+
+### Filename of the database file.
+sqlite_filename = "test.sqlite"
+
+### SQLite statement to use for inserts
+sqlite_statement = "INSERT INTO data (time, temp1, temp2, temp3, temp4, temp5, temp6, pump1, pump2, pump3, heat) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+
+### VBus values to use for inserts. Each "?" in the statement above must have
+### a matching VBus packet field ID or one of the magic keywords in this array.
+### The keywords are:
+###
+### - "UtcDateTime": the RFC3339 formatted time using the UTC timezone
+### - "LocalDateTime": the RFC3339 formatted time using the local timezone
+sqlite_fields = [
+    "UtcDateTime",
+    "00_0010_7E11_10_0100_000_2_0",
+    "00_0010_7E11_10_0100_002_2_0",
+    "00_0010_7E11_10_0100_004_2_0",
+    "00_0010_7E11_10_0100_006_2_0",
+    "00_0010_7E11_10_0100_008_2_0",
+    "00_0010_7E11_10_0100_010_2_0",
+    "00_0010_7E11_10_0100_076_1_0",
+    "00_0010_7E11_10_0100_077_1_0",
+    "00_0010_7E11_10_0100_078_1_0",
+    "00_0010_7E31_10_0100_000_4_0",
+]

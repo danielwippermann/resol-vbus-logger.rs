@@ -53,6 +53,13 @@ impl From<&'static str> for Error {
 }
 
 
+impl From<String> for Error {
+    fn from(description: String) -> Error {
+        Error::new(description, None)
+    }
+}
+
+
 macro_rules! from_other_error {
     ($type:path) => {
         impl From<$type> for Error {
@@ -68,6 +75,7 @@ from_other_error!(::std::io::Error);
 from_other_error!(::image::ImageError);
 from_other_error!(::rusttype::Error);
 from_other_error!(::serialport::Error);
+from_other_error!(::sqlite::Error);
 from_other_error!(::toml::de::Error);
 
 
