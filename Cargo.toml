@@ -8,10 +8,11 @@ env_logger = "0.6.0"
 image = "0.20.1"
 imageproc = "0.17.0"
 log = "0.4.6"
-"resol-vbus" = { git = "https://github.com/danielwippermann/resol-vbus.rs", rev = "c82b626b8262ac9b2fcf371fe3555a707c623c1d"}
+"resol-vbus" = { git = "https://github.com/danielwippermann/resol-vbus.rs", rev = "81d6c2775a85bf097a9c542e06c1db0b31d9ddb2"}
 # "resol-vbus" = { path = "../.." }
 rusttype = "0.7.3"
 serde = "1.0.80"
 serde_derive = "1.0.80"
 serialport = "3.1.0"
+sqlite = "0.24.0"
 toml = "0.4.9"
