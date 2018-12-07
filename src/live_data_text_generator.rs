@@ -47,7 +47,7 @@ impl LiveDataTextGenerator {
             let packet_name = &field.packet_spec().name;
             let field_name = &field.field_spec().name;
 
-            write!(output, "{}_{};{};{};{}: {}\n", field.packet_spec().packet_id, field.field_spec().field_id, value, unit_text, packet_name, field_name);
+            write!(output, "{}_{};{};{};{}: {}\n", field.packet_spec().packet_id, field.field_spec().field_id, value, unit_text, packet_name, field_name)?;
         }
 
         output.flush()?;
