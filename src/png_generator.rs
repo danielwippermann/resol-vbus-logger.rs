@@ -17,13 +17,13 @@ use rusttype::{Font, FontCollection, Scale};
 
 use config::Config;
 
-use error::{Result};
+use error::{Error, Result};
 
 
 pub struct PngGenerator<'a> {
     pub spec: Specification,
 
-    pub img: DynamicImage,
+    pub img: Option<DynamicImage>,
     pub font: Font<'a>,
     pub png_output_filename: String,
 }
@@ -35,8 +35,11 @@ impl<'a> PngGenerator<'a> {
 
         let spec = Specification::from_file(spec_file, Language::De);
 
-        let img = image::open(&config.png_input_filename)?;
-        // let img = image::open("solarthermie.png")?;
+        let img = if config.png_tick_interval > 0 {
+            Some(image::open(&config.png_input_filename)?)
+        } else {
+            None
+        };
 
         let font = Vec::from(include_bytes!("../Roboto-Regular.ttf") as &[u8]);
 
@@ -65,7 +68,10 @@ impl<'a> PngGenerator<'a> {
             field_map.insert(key, value);
         }
 
-        let mut img = self.img.clone();
+        let mut img = match self.img {
+            Some(ref img) => img.clone(),
+            None => return Err(Error::from("No image loaded")),
+        };
 
         let default_str = "---".to_string();
 
