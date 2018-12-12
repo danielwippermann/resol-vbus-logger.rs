@@ -125,13 +125,18 @@ fn stream_live_data<R: Read + ReadWithTimeout, W: Write>(config: &Config, mut ld
     let mut data_set_settled_max_count = data_set.len() * 3;
     let mut data_set_settled_count = 0;
 
+    debug!("Initializing PNG");
     let png_generator = PngGenerator::from_config(&config)?;
+    debug!("Initializing CSV");
     let mut csv_generator = CsvGenerator::from_config(&config)?;
+    debug!("Initializing Live Data Text");
     let mut live_data_text_generator = LiveDataTextGenerator::from_config(&config)?;
+    debug!("Initializing SQLite");
     let mut sqlite_logger = SqliteLogger::from_config(&config)?;
 
     let now = UTC::now();
 
+    debug!("Initializing tick sources");
     let mut png_tick_source = TickSource::new(config.png_tick_interval, now);
     let mut csv_tick_source = TickSource::new(config.csv_tick_interval, now);
     let mut live_data_text_tick_source = TickSource::new(config.live_data_text_tick_interval, now);
