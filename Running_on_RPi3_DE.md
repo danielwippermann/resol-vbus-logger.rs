@@ -34,7 +34,7 @@ Manche diese Verarbeitungen erfordern nur eine Konfiguration über die Konfigura
 
 Für den Betrieb des Programms auf einem Raspberry Pi wird folgendes benötigt:
 
-- Raspberry Pi mit aktuellem Raspbian auf SD-Karte (getestet wurde "2018-11-13-raspbian-stretch.img")
+- Raspberry Pi mit aktuellem Raspbian auf SD-Karte (getestet wurde "2020-02-13-raspbian-buster-lite.img")
 - Zugang zu einem Regler mit RESOL VBus über eine der oben beschriebenen Quellen
 - Rust-Toolchain
 - ein bischen Zeit
@@ -47,13 +47,14 @@ Die folgenden Befehle müssen über das Linux-Terminal des Raspberry Pis abgeset
 Für das erfolgreiche Kompilieren später muss ein Paket installiert sein, das nicht Bestandteil
 der Raspbian-Standarddistribution ist:
 
-    sudo apt-get install libudev-dev
+    sudo apt-get update
+    sudo apt-get install libudev-dev git
 
 Die Rust-Toolchain selber lässt sich mit dem folgenden Befehl installieren (ich weiß, ich bin
 auch kein Freund von `curl ... | sh`-Kombinationen, aber so steht es in der
 [Dokumentation](https://www.rust-lang.org/)...):
 
-    curl https://sh.rustup.rs -sSf | sh
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 
 Dieses Skript installiert die aktuelle Rust-Toolchain für den Raspberry Pi. Am Ende des
 Installationsvorgangs kommt der Hinweis, dass man entweder ein neues Terminal aufmachen kann
