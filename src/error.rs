@@ -7,12 +7,12 @@ use std::result::Result as StdResult;
 #[derive(Debug)]
 pub struct Error {
     description: String,
-    cause: Option<Box<StdError>>,
+    cause: Option<Box<dyn StdError>>,
 }
 
 
 impl Error {
-    pub fn new(description: String, cause: Option<Box<StdError>>) -> Error {
+    pub fn new(description: String, cause: Option<Box<dyn StdError>>) -> Error {
         Error {
             description,
             cause,
@@ -37,7 +37,7 @@ impl StdError for Error {
         &self.description
     }
 
-    fn cause(&self) -> Option<&StdError> {
+    fn cause(&self) -> Option<&dyn StdError> {
         match self.cause {
             Some(ref err) => Some(err.deref()),
             None => None,
