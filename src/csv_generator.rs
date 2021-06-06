@@ -6,7 +6,6 @@ use resol_vbus::{
     DataSet,
     Language,
     Specification,
-    SpecificationFile,
 };
 
 
@@ -24,7 +23,7 @@ pub struct CsvGenerator {
 
 impl CsvGenerator {
     pub fn from_config(config: &Config) -> Result<CsvGenerator> {
-        let spec_file = SpecificationFile::new_default();
+        let spec_file = config.load_spec_file()?;
 
         let spec = Specification::from_file(spec_file, Language::De);
 

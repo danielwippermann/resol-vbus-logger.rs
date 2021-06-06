@@ -1,6 +1,8 @@
 use std::fs::File;
 use std::io::Read;
 
+use resol_vbus::SpecificationFile;
+
 use error::Result;
 
 
@@ -28,6 +30,8 @@ pub struct Config {
     pub sqlite_filename: String,
     pub sqlite_statement: String,
     pub sqlite_fields: Vec<String>,
+
+    pub vsf_filename: Option<String>,
 }
 
 
@@ -42,5 +46,19 @@ impl Config {
         let config = toml::from_str(&config_string)?;
 
         Ok(config)
+    }
+
+    pub fn load_spec_file(&self) -> Result<SpecificationFile> {
+        let spec_file = match &self.vsf_filename {
+            Some(filename) => {
+                let bytes = std::fs::read(filename)?;
+                match SpecificationFile::from_bytes(&bytes) {
+                    Ok(spec_file) => spec_file,
+                    Err(err) => return Err(format!("Unable to parse VSF file: {:?}", err).into()),
+                }
+            },
+            None => SpecificationFile::new_default(),
+        };
+        Ok(spec_file)
     }
 }
