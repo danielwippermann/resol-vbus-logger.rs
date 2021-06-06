@@ -121,3 +121,11 @@ sqlite_fields = [
     "00_0010_7E11_10_0100_078_1_0",
     "00_0010_7E31_10_0100_000_4_0",
 ]
+
+
+###
+### Other settings
+###
+
+### The filename of the VBus Specification File (VSF).
+vsf_filename = "vbus_specification.vsf"
