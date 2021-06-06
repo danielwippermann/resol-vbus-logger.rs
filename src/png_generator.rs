@@ -12,7 +12,7 @@ use resol_vbus::{
     SpecificationFile,
 };
 
-use rusttype::{Font, FontCollection, Scale};
+use rusttype::{Font, Scale};
 
 
 use config::Config;
@@ -43,9 +43,10 @@ impl<'a> PngGenerator<'a> {
 
         let font = Vec::from(include_bytes!("../Roboto-Regular.ttf") as &[u8]);
 
-        let font = FontCollection::from_bytes(font)?;
-        
-        let font = font.into_font()?;
+        let font = match Font::try_from_vec(font) {
+            Some(font) => font,
+            None => return Err("Unable to parse font".into()),
+        };
 
         let png_output_filename = config.png_output_filename.clone();
 

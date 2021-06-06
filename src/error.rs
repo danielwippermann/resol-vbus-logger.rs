@@ -73,7 +73,6 @@ macro_rules! from_other_error {
 
 from_other_error!(::std::io::Error);
 from_other_error!(::image::ImageError);
-from_other_error!(::rusttype::Error);
 from_other_error!(::serialport::Error);
 from_other_error!(::sqlite::Error);
 from_other_error!(::toml::de::Error);
