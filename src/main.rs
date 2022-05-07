@@ -217,7 +217,7 @@ fn run_main() -> Result<()> {
         debug!("Using serial port");
 
         debug!("Connecting serial port");
-        let port = serialport::open(path)?;
+        let port = serialport::new(path, 9600).open()?;
 
         let reader = SerialPortStream::new(port.try_clone()?);
         let writer = SerialPortStream::new(port);
