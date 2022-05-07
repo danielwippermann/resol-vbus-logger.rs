@@ -13,37 +13,37 @@
 //! - Connected either to a serial port or VBus-over-TCP device
 //! - Writes data to CSV file at configurable intervals
 //! - Renders a PNG containing data at configurable intervals
-//! 
-//! 
+//!
+//!
 //! ## First-time setup
-//! 
+//!
 //! ```
 //! # Change to the directory where the project should be stored
 //! cd <path to directory>
-//! 
+//!
 //! # Clone the project
 //! git clone https://github.com/danielwippermann/resol-vbus-logger.rs
-//! 
+//!
 //! # Change into the project directory
 //! cd resol-vbus-logger.rs
-//! 
+//!
 //! # Copy the `config.toml.example` to `config.toml`
 //! cp config.toml.example config.toml
-//! 
+//!
 //! # Edit the `config.toml`
 //! ```
-//! 
-//! 
+//!
+//!
 //! ## Usage
-//! 
+//!
 //! ```
 //! # Change to the project directory
 //! cd <path to directory>/resol-vbus-logger.rs
-//! 
+//!
 //! # Run the application from the folder where the `config.toml` is located.
 //! cargo run
 //! ```
-//!  
+//!
 
 #![warn(missing_docs)]
 #![deny(missing_debug_implementations)]
@@ -78,6 +78,7 @@ mod timestamp_file_writer;
 use std::io::{Read, Write};
 use std::net::TcpStream;
 
+use resol_vbus::{Specification, Language};
 use resol_vbus::{
     chrono::prelude::*,
     Data,
@@ -198,6 +199,12 @@ fn stream_live_data<R: Read + ReadWithTimeout, W: Write>(config: &Config, mut ld
                     let mut sorted_data_set = data_set.clone();
                     sorted_data_set.sort();
                     debug!("Settled {:?}", sorted_data_set.iter().map(|data| data.id_string()).collect::<Vec<_>>());
+
+                    let spec_file = config.load_spec_file()?;
+                    let spec = Specification::from_file(spec_file, Language::De);
+                    for field in spec.fields_in_data_set(&sorted_data_set) {
+                        debug!("  - {}: {}: {}", field.packet_field_id().packet_field_id_string(), field.packet_spec().name, field.field_spec().name);
+                    }
                 }
             }
         }
