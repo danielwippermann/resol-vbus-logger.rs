@@ -1,10 +1,10 @@
 [package]
 name = "logger"
-version = "0.2.0"
+version = "0.3.0"
 authors = ["Daniel Wippermann <Daniel.Wippermann@gmail.com>"]
 
 [dependencies]
-env_logger = "0.8.3"
+env_logger = "0.9.0"
 image = "0.23.14"
 imageproc = "0.22.0"
 log = "0.4.14"
@@ -13,6 +13,6 @@ log = "0.4.14"
 rusttype = "0.9.2"
 serde = "1.0.106"
 serde_derive = "1.0.106"
-serialport = "3.3.0"
+serialport = "4.1.0"
 sqlite = "0.26.0"
 toml = "0.5.8"
