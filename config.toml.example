@@ -99,28 +99,53 @@ sqlite_tick_interval = 0
 ### Filename of the database file.
 sqlite_filename = "test.sqlite"
 
-### SQLite statement to use for inserts
-sqlite_statement = "INSERT INTO data (time, temp1, temp2, temp3, temp4, temp5, temp6, pump1, pump2, pump3, heat) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+### The SQLite logger can be used in two modes:
+### - the "relational" mode
+### - the "tabular" mode
+###
+### In relational mode data is stored in two tables:
+### - "datasets" contains a data set ID and the timestamp of recording
+### - "fields" contains the associated data set ID, the VBus packet field ID
+###    and the value
+### The table names can be configured using the "sqlite_datasets_table" and
+### "sqlite_fields_table". Every time the SQLite logger stores a data set
+### it creates a new row in the "datasets" table and then creates a new row
+### in the "fields" table for each VBus packet field to store.
+###
+### In the tabular mode data is stored in only one table. That table contains
+### both the timestamp of recording as well as multiple columns for the VBus
+### packet field values. Every time the SQLite logger stores a data set
+### it create a new row by executing the "sqlite_statement" passing the
+### values configured in the "sqlite_fields" list.
 
-### VBus values to use for inserts. Each "?" in the statement above must have
-### a matching VBus packet field ID or one of the magic keywords in this array.
-### The keywords are:
+### Name of the data sets table used in relational mode
+sqlite_datasets_table = "datasets"
+
+### Name of the fields tables used in relational mode
+sqlite_fields_table = "fields"
+
+### SQLite statement to use for inserts in tabular mode
+# sqlite_statement = "INSERT INTO data (time, temp1, temp2, temp3, temp4, temp5, temp6, pump1, pump2, pump3, heat) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+
+### VBus values to use for inserts in tabular mode. Each "?" in the statement
+### above must have a matching VBus packet field ID or one of the magic
+### keywords in this array. The keywords are:
 ###
 ### - "UtcDateTime": the RFC3339 formatted time using the UTC timezone
 ### - "LocalDateTime": the RFC3339 formatted time using the local timezone
-sqlite_fields = [
-    "UtcDateTime",
-    "00_0010_7E11_10_0100_000_2_0",
-    "00_0010_7E11_10_0100_002_2_0",
-    "00_0010_7E11_10_0100_004_2_0",
-    "00_0010_7E11_10_0100_006_2_0",
-    "00_0010_7E11_10_0100_008_2_0",
-    "00_0010_7E11_10_0100_010_2_0",
-    "00_0010_7E11_10_0100_076_1_0",
-    "00_0010_7E11_10_0100_077_1_0",
-    "00_0010_7E11_10_0100_078_1_0",
-    "00_0010_7E31_10_0100_000_4_0",
-]
+# sqlite_fields = [
+#     "UtcDateTime",
+#     "00_0010_7E11_10_0100_000_2_0",
+#     "00_0010_7E11_10_0100_002_2_0",
+#     "00_0010_7E11_10_0100_004_2_0",
+#     "00_0010_7E11_10_0100_006_2_0",
+#     "00_0010_7E11_10_0100_008_2_0",
+#     "00_0010_7E11_10_0100_010_2_0",
+#     "00_0010_7E11_10_0100_076_1_0",
+#     "00_0010_7E11_10_0100_077_1_0",
+#     "00_0010_7E11_10_0100_078_1_0",
+#     "00_0010_7E31_10_0100_000_4_0",
+# ]
 
 
 ###

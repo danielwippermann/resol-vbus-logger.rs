@@ -48,10 +48,11 @@ RUST_LOG=debug target/debug/logger
 ```
 
 
-### Using the SQLite logger
+### Using the SQLite logger in tabular mode
 
-The SQLite logger needs some manual setup to work.
+The SQLite logger needs some manual setup to work in tabular mode.
 
+- Make sure the SQLite is disabled by setting `sqlite_tick_interval` to 0
 - Start the resol-vbus-logger in debug mode:
     ```
     $ RUST_LOG=debug target/debug/logger
@@ -78,6 +79,7 @@ The SQLite logger needs some manual setup to work.
 - Make sure that the `sqlite_statement` matches your `sqlite_fields` entries:
     - The amount of columns in the first set of parentheses must match the amount of `sqlite_field` entries
     - The amount of question marks in the second set of parentheses must match the amout of `sqlite_field` entries
+- Enable SQLite logging by setting `sqlite_tick_interval` to a value greater than 0
 - Save the `config.toml`
 - Open the SQLite file references in the `sqlite_filename` configuration value
 - Create a table that matches your `sqlite_statement`, e.g.

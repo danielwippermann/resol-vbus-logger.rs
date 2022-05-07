@@ -28,8 +28,10 @@ pub struct Config {
 
     pub sqlite_tick_interval: i64,
     pub sqlite_filename: String,
-    pub sqlite_statement: String,
-    pub sqlite_fields: Vec<String>,
+    pub sqlite_datasets_table: Option<String>,
+    pub sqlite_fields_table: Option<String>,
+    pub sqlite_statement: Option<String>,
+    pub sqlite_fields: Option<Vec<String>>,
 
     pub vsf_filename: Option<String>,
 }
