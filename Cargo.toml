@@ -5,8 +5,8 @@ authors = ["Daniel Wippermann <Daniel.Wippermann@gmail.com>"]
 
 [dependencies]
 env_logger = "0.9.0"
-image = "0.23.14"
-imageproc = "0.22.0"
+image = "0.24.2"
+imageproc = "0.23.0"
 log = "0.4.14"
 "resol-vbus" = { git = "https://github.com/danielwippermann/resol-vbus.rs", rev = "81d6c2775a85bf097a9c542e06c1db0b31d9ddb2"}
 # "resol-vbus" = { path = "../.." }
