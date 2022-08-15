@@ -143,6 +143,8 @@ fn stream_live_data<R: Read + ReadWithTimeout, W: Write>(config: &Config, mut ld
     let mut live_data_text_tick_source = TickSource::new(config.live_data_text_tick_interval, now);
     let mut sqlite_tick_source = TickSource::new(config.sqlite_tick_interval, now);
 
+    let mut last_data_received = now;
+
     loop {
         let now = UTC::now();
         if png_tick_source.process(now) {
@@ -174,6 +176,8 @@ fn stream_live_data<R: Read + ReadWithTimeout, W: Write>(config: &Config, mut ld
         }
 
         if let Some(data) = lds.receive(500)? {
+            last_data_received = now;
+
             if !data.is_packet() {
                 // nop
             } else if data_set_is_settled {
@@ -206,6 +210,13 @@ fn stream_live_data<R: Read + ReadWithTimeout, W: Write>(config: &Config, mut ld
                         debug!("  - {}: {}: {}", field.packet_field_id().packet_field_id_string(), field.packet_spec().name, field.field_spec().name);
                     }
                 }
+            }
+        }
+
+        if let Some(timeout) = config.timeout {
+            let diff = now.signed_duration_since(last_data_received);
+            if diff.num_seconds() > timeout {
+                return Err("Timeout while receiving live data".into());
             }
         }
     }

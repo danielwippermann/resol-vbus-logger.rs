@@ -14,6 +14,7 @@ pub struct Config {
     pub via_tag: Option<String>,
     pub password: Option<String>,
     pub channel: Option<u8>,
+    pub timeout: Option<i64>,
     pub known_packet_ids: Vec<String>,
 
     pub png_tick_interval: i64,
