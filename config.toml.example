@@ -18,6 +18,10 @@ password = "vbus"
 ### Channel to connect to on the multi-channel VBus-over-TCP device (like the DL3).
 channel = 0
 
+### Number of seconds until the live data receiver times out after receiving no data
+### Comment out if not needed
+timeout = 10
+
 ### List of known packet IDs to expect on this connection. Speeds up the
 ### "settling" phase.
 known_packet_ids = [
